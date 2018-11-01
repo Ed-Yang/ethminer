@@ -41,6 +41,11 @@ namespace p2p
 struct NodeEntry: public Node
 {
 	NodeEntry(NodeID const& _src, Public const& _pubk, NodeIPEndpoint const& _gw);
+
+#if 1 /* edward, add virtual destructor */
+    virtual ~NodeEntry() {}
+#endif
+
 	unsigned const distance;	///< Node's distance (xor of _src as integer).
 	bool pending = true;		///< Node will be ignored until Pong is received
 };
@@ -57,6 +62,10 @@ class NodeTableEventHandler
 	friend class NodeTable;
 public:
 	virtual void processEvent(NodeID const& _n, NodeTableEventType const& _e) = 0;
+
+#if 1 /* edward, add virtual destructor */
+    virtual ~NodeTableEventHandler() {}
+#endif
 
 protected:
 	/// Called by NodeTable on behalf of an implementation (Host) to process new events without blocking nodetable.
@@ -132,7 +141,12 @@ public:
 	
 	/// Constructor requiring host for I/O, credentials, and IP Address and port to listen on.
 	NodeTable(ba::io_service& _io, KeyPair const& _alias, NodeIPEndpoint const& _endpoint, bool _enabled = true);
+
+#if 1 /* edward, add virtual destructor */
+    virtual ~NodeTable();
+#else
 	~NodeTable();
+#endif
 
 	/// Returns distance based on xor metric two node ids. Used by NodeEntry and NodeTable.
 	static unsigned distance(NodeID const& _a, NodeID const& _b) { u256 d = sha3(_a) ^ sha3(_b); unsigned ret; for (ret = 0; d >>= 1; ++ret) {}; return ret; }
@@ -280,6 +294,10 @@ struct DiscoveryDatagram: public RLPXDatagramFace
 {
 	/// Constructor used for sending.
 	DiscoveryDatagram(bi::udp::endpoint const& _to): RLPXDatagramFace(_to), ts(futureFromEpoch(std::chrono::seconds(60))) {}
+
+#if 1 /* edward, add virtual destructor */
+    virtual ~DiscoveryDatagram() {}
+#endif
 
 	/// Constructor used for parsing inbound packets.
 	DiscoveryDatagram(bi::udp::endpoint const& _from, NodeID const& _fromid, h256 const& _echo): RLPXDatagramFace(_from), sourceid(_fromid), echo(_echo) {}

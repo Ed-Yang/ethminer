@@ -60,6 +60,10 @@ public:
 	/// Construct Peer from Node.
 	Peer(Node const& _node): Node(_node) {}
 	
+#if 1 /* edward, add virtual destructor */
+    virtual ~Peer() {}
+#endif
+
 	bool isOffline() const { return !m_session.lock(); }
 
 	virtual bool operator<(Peer const& _p) const;

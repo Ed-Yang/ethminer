@@ -66,6 +66,10 @@ class AccountHolder
 public:
 	explicit AccountHolder(std::function<Interface*()> const& _client): m_client(_client) {}
 
+#if 1 /* edward, add virtual destructor */
+    virtual ~AccountHolder() {}
+#endif
+
 	virtual AddressHash realAccounts() const = 0;
 	// use m_web3's submitTransaction
 	// or use AccountHolder::queueTransaction(_t) to accept

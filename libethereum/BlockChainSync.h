@@ -50,7 +50,13 @@ class BlockChainSync: public HasInvariants
 {
 public:
 	BlockChainSync(EthereumHost& _host);
+
+#if 1 /* edward, add virtual destructor */
+    virtual ~BlockChainSync();
+#else
 	~BlockChainSync();
+#endif
+
 	void abortSync(); ///< Abort all sync activity
 
 	/// @returns true is Sync is in progress

@@ -42,6 +42,10 @@ public:
 	/// Construct packet. RLPStream data is invalidated.
 	RLPXPacket(uint8_t _capId, RLPStream& _type, RLPStream& _data): m_cap(_capId), m_type(_type.out()), m_data(_data.out()) {}
 
+#if 1 /* edward, add virtual destructor */
+    virtual ~RLPXPacket() {}
+#endif
+
 	/// Construct packet from single bytestream. RLPStream data is invalidated.
 	RLPXPacket(uint8_t _capId, bytesConstRef _in): m_cap(_capId), m_type(nextRLP(_in).toBytes()) { if (_in.size() > m_type.size()) { m_data.resize(_in.size() - m_type.size()); _in.cropped(m_type.size()).copyTo(&m_data); } }
 	
